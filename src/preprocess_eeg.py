@@ -74,11 +74,12 @@ def preprocess_eeg(raw, events):
     # common average reference
     raw.set_eeg_reference('average', projection=True, verbose=False)
 
-    # filter raw data
+    # high and low pass filtering of the data (low-pass at 40 hz to avoid 50 hz power line interference, high-pass at 1 Hz)
     raw.filter(l_freq = 1, h_freq = 40, verbose=False)
 
     # epoch data
     epochs = mne.Epochs(raw, events, tmin=0, tmax=0.5, proj=True, picks=picks, baseline=None, preload=True, verbose=False, reject ={'eeg': 150e-6})
+    
     return epochs
 
 def preprocess_subject(sub_path:Path):
@@ -112,11 +113,13 @@ def preprocess_subject(sub_path:Path):
     epochs = preprocess_eeg(raw, events)
 
     # save epochs as numpy array
-    X = epochs.get_data()
+    X = epochs.get_data(copy = True) # copy = True to avoid future warning
     y = epochs.events[:, -1]
 
     np.save(X_path, X)
     np.save(y_path, y)
+
+    print(f"Subject {sub_path.name} preprocessed.")
 
 def main():
     path = Path(__file__)
@@ -127,8 +130,11 @@ def main():
     subjects = [subject for subject in subjects if subject.name.startswith("sub-")]
 
     # use multiprocessing to speed up the process
-    pool = mp.Pool(mp.cpu_count())
-    pool.map(preprocess_subject, subjects)
+    #pool = mp.Pool(mp.cpu_count())
+    #pool.map(preprocess_subject, subjects)
+
+    for subject in subjects:
+        preprocess_subject(subject)
 
 
 if __name__ == '__main__':

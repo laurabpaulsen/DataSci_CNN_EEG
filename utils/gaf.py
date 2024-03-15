@@ -38,7 +38,7 @@ def trial_to_gaf(X:np.ndarray, image_size = 50):
 
     return im
 
-def generate_gafs(X:np.array, y:np.array, image_size = 50):
+def generate_gafs(X:np.array, image_size = 50):
     """
     Converts the timeseries data into Gramian Angular Fields (GAFs) and maps them onto a image with 3 channels.
 
@@ -46,27 +46,23 @@ def generate_gafs(X:np.array, y:np.array, image_size = 50):
     ----------
     X : np.array
         The timeseries data with trials as the first dimension
-    
-    y : np.array
-        The labels for the timeseries data
-
-    outpath : Path
-        Path to save the GAFs
 
 
     Returns
     -------
-    None
+    np.array
+        The GAFs for the timeseries data
+    
     """
+    n_trials = X.shape[0]
+    n_sensors = X.shape[1]
+
     
-    # check that the first dimension of X matches the length of y
-    assert X.shape[0] == len(y)
-    
-    gafs = np.zeros((X.shape[0], image_size, image_size, 3))
+    gafs = np.zeros((n_trials, image_size, image_size, n_sensors, 3))
 
     # loop over trials
     for i, x in enumerate(X):
         # convert the trial to GAF
         gafs[i] = trial_to_gaf(x, image_size)
 
-    return gafs, y
+    return gafs

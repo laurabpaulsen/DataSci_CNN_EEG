@@ -30,7 +30,7 @@ def main():
         X, y = np.load(preprc_path / subject / 'X.npy'), np.load(preprc_path / subject / 'y.npy')
 
         # generate the GAFs
-        gafs, y = generate_gafs(X, y)
+        gafs = generate_gafs(X)
 
         # save the GAFs
         np.save(outpath / f'{subject}_gafs.npy', gafs)
