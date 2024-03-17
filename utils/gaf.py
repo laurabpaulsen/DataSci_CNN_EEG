@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import tqdm
 from pyts.image import GramianAngularField, MarkovTransitionField
 
 
@@ -61,7 +62,7 @@ def generate_gafs(X:np.array, image_size = 50):
     gafs = np.zeros((n_trials, image_size, image_size, n_sensors, 3))
 
     # loop over trials
-    for i, x in enumerate(X):
+    for i, x in tqdm(enumerate(X), total=n_trials):
         # convert the trial to GAF
         gafs[i] = trial_to_gaf(x, image_size)
 
