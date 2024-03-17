@@ -1,5 +1,18 @@
 from matplotlib import pyplot as plt
 
+# set parameters for plots
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['image.cmap'] = 'RdBu_r'
+plt.rcParams['axes.labelsize'] = 14
+plt.rcParams['axes.titlesize'] = 14
+plt.rcParams['xtick.labelsize'] = 12
+plt.rcParams['ytick.labelsize'] = 12
+plt.rcParams['legend.fontsize'] = 10
+plt.rcParams['legend.title_fontsize'] = 12
+plt.rcParams['figure.titlesize'] = 16
+plt.rcParams['figure.dpi'] = 300
+
+
 
 def plot_history(history, save_path = None):
     fig, ax = plt.subplots(1, 2, figsize=(10, 5))

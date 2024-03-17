@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 # sklearn tools
 from sklearn.model_selection import train_test_split
@@ -9,19 +8,6 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
-
-# set parameters for plots
-plt.rcParams['font.family'] = 'serif'
-plt.rcParams['image.cmap'] = 'RdBu_r'
-plt.rcParams['axes.labelsize'] = 14
-plt.rcParams['axes.titlesize'] = 14
-plt.rcParams['xtick.labelsize'] = 12
-plt.rcParams['ytick.labelsize'] = 12
-plt.rcParams['legend.fontsize'] = 10
-plt.rcParams['legend.title_fontsize'] = 12
-plt.rcParams['figure.titlesize'] = 16
-plt.rcParams['figure.dpi'] = 300
-
 
 
 class GAFDataset(Dataset):
@@ -217,7 +203,6 @@ def prep_model(lr: float):
             self.pool3 = nn.MaxPool3d(kernel_size=(2, 2, 1))
             self.bn3 = nn.BatchNorm3d(128)
             self.drop3 = nn.Dropout3d(p=0.2)
-            
 
             self.avgpool = nn.AdaptiveAvgPool3d((1, 1, 1))
             self.fc1 = nn.Linear(128, 256)
