@@ -5,7 +5,6 @@
 
 import numpy as np
 from pathlib import Path
-from pathlib import Path
 
 # local imports
 import sys
@@ -26,8 +25,15 @@ def main():
         outpath.mkdir(parents=True)
 
     for subject in subjects:
+
+        print(f"Converting timeseries to images for participant {subject}")
+
         # load the data
         X, y = np.load(preprc_path / subject / 'X.npy'), np.load(preprc_path / subject / 'y.npy')
+
+        # only keep the first 1000 trials per parcipant
+        X = X[:1000, ...]
+        y = y[:1000]
 
         # generate the GAFs
         gafs = generate_gafs(X)
