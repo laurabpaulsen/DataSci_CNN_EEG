@@ -14,8 +14,8 @@ from utils.gaf import generate_gafs
 
 def main():
     path = Path(__file__).parents[1]
-    preprc_path = path / 'data' /'preprocessed'
-    outpath = path / 'data' / 'gaf'
+    preprc_path = path / 'data' /'preprocessed_lau'
+    outpath = path / 'data' / 'gaf_lau'
 
     # loop over subjects
     subjects = [x.name for x in preprc_path.iterdir()]
@@ -30,10 +30,10 @@ def main():
 
         # load the data
         X, y = np.load(preprc_path / subject / 'X.npy'), np.load(preprc_path / subject / 'y.npy')
+        
 
-        # only keep the first 1000 trials per parcipant
-        X = X[:1000, ...]
-        y = y[:1000]
+        print(X.shape)
+        print(y.shape)
 
         # SCALE THE DATA (-1 to 1) -> Maybe?? 
         # REASONS: 1) GAFs are sensitive to the range of the data, 2) the range of the data is different for each participant
@@ -42,7 +42,11 @@ def main():
         #X = (2*X - X.min()) / (X.max() - X.min()) 
 
         # generate the GAFs
-        gafs = generate_gafs(X)
+        gafs = generate_gafs(X, image_size=32, n_bins=4)
+        print("-------------------")
+        print(X.shape)
+        print(y.shape)
+        print(gafs.shape)
 
         # save the GAFs
         np.save(outpath / f'{subject}_gafs.npy', gafs)

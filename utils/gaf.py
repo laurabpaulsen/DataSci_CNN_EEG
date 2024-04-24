@@ -3,7 +3,7 @@ from tqdm import tqdm
 from pyts.image import GramianAngularField, MarkovTransitionField
 
 
-def trial_to_gaf(X:np.ndarray, image_size = 50):
+def trial_to_gaf(X:np.ndarray, image_size = None, n_bins = 4):
     """
     Transform a set of time series into a single image tensor using Gramian Angular Field (GAF) and 
     Markov Transition Field (MTF) techniques.
@@ -23,7 +23,7 @@ def trial_to_gaf(X:np.ndarray, image_size = 50):
     """
     trans_s = GramianAngularField(method = 'summation', image_size=image_size)
     trans_d = GramianAngularField(method = 'difference', image_size=image_size)
-    trans_m = MarkovTransitionField(image_size=image_size)
+    trans_m = MarkovTransitionField(image_size=image_size, n_bins=n_bins)
     
     # transform each trial
     X_gaf_s = trans_s.fit_transform(X)
@@ -39,7 +39,7 @@ def trial_to_gaf(X:np.ndarray, image_size = 50):
 
     return im
 
-def generate_gafs(X:np.array, image_size = 50):
+def generate_gafs(X:np.array, image_size = None, n_bins = 4):
     """
     Converts the timeseries data into Gramian Angular Fields (GAFs) and maps them onto a image with 3 channels.
 
@@ -58,12 +58,14 @@ def generate_gafs(X:np.array, image_size = 50):
     n_trials = X.shape[0]
     n_sensors = X.shape[1]
 
+    if image_size is None:
+        image_size = X.shape[-1]
+
     
     gafs = np.zeros((n_trials, image_size, image_size, n_sensors, 3))
 
     # loop over trials
     for i, x in tqdm(enumerate(X), total=n_trials):
-        # convert the trial to GAF
-        gafs[i] = trial_to_gaf(x, image_size)
+        gafs[i] = trial_to_gaf(x, image_size=image_size, n_bins=n_bins)
 
     return gafs

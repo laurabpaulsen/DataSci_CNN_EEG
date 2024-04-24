@@ -5,9 +5,9 @@ Subject: sub-01
 
               precision    recall  f1-score   support
 
-     Animate       0.50      0.84      0.63        92
-   Inanimate       0.68      0.30      0.41       108
+     Animate       0.44      0.64      0.52        92
+   Inanimate       0.51      0.31      0.39       108
 
-    accuracy                           0.55       200
-   macro avg       0.59      0.57      0.52       200
-weighted avg       0.60      0.55      0.51       200
+    accuracy                           0.47       200
+   macro avg       0.48      0.48      0.46       200
+weighted avg       0.48      0.47      0.45       200

@@ -25,7 +25,7 @@ class GAFDataset(Dataset):
         y = self.labels[idx]
         return X, y
  
-def prep_dataloaders(gafs, labels, batch_size=4):
+def prep_dataloaders(gafs, labels, batch_size=4, test_size=0.3):
     """
     Creates dataloaders for training, validation, and testing
 
@@ -51,8 +51,8 @@ def prep_dataloaders(gafs, labels, batch_size=4):
     """
 
     # split into train, validation, and test sets
-    X_train, X_test, y_train, y_test = train_test_split(gafs, labels, test_size=0.2, random_state=7)
-    X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.3, random_state=7)
+    X_train, X_test, y_train, y_test = train_test_split(gafs, labels, test_size=test_size, random_state=7)
+    X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=test_size, random_state=7)
 
     # create dataloaders
     train_loader = DataLoader(GAFDataset(X_train, y_train), batch_size=batch_size, shuffle=True)

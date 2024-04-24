@@ -12,4 +12,7 @@ source "$scriptDir/env/bin/activate"
 # Install requirements from the same directory as the script
 python3 -m pip install -r "$scriptDir/requirements.txt"
 
+# add to ipykernel
+
+
 echo "Done!"
