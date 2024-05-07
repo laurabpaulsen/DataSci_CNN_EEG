@@ -177,16 +177,7 @@ class CNN():
         return self.model.state_dict()
 
 
-def prep_model(lr: float):
-    """
-    Initialize CNN, optimizer, and loss function
-
-    Parameters
-    ----------
-    lr : float
-        Learning rate
-    """
-    class Net(nn.Module):
+class Net(nn.Module):
         def __init__(self):
             super(Net, self).__init__()
             self.conv1 = nn.Conv3d(50, 18, kernel_size=3)
@@ -206,9 +197,11 @@ def prep_model(lr: float):
 
             self.avgpool = nn.AdaptiveAvgPool3d((1, 1, 1))
             self.fc1 = nn.Linear(128, 256)
-            self.fc2 = nn.Linear(256, 1)
+            self.fc2 = nn.Linear(256, 2)
 
         def forward(self, x):
+            # convert tensor to float to avoid error 
+            x = x.float()
             x = self.drop1(self.bn1(self.pool1(torch.relu(self.conv1(x)))))
             x = self.drop2(self.bn2(self.pool2(torch.relu(self.conv2(x)))))
             x = self.drop3(self.bn3(self.pool3(torch.relu(self.conv3(x)))))
@@ -217,11 +210,3 @@ def prep_model(lr: float):
             x = torch.relu(self.fc1(x))
             x = self.fc2(x)
             return x
-
-    model = Net()
-
-    # define optimizer and loss function
-    optimizer = optim.Adam(model.parameters(), lr=lr)
-    criterion = nn.BCEWithLogitsLoss()
-
-    return model, optimizer, criterion
