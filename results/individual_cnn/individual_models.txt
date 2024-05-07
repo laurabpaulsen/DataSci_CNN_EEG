@@ -1,0 +1,6 @@
+sub-01_sub-01 : {'model': 'sub-01', 'test_subject': 'sub-01', 'accuracy': 0.5833333333333334}
+sub-01_sub-02 : {'model': 'sub-01', 'test_subject': 'sub-02', 'accuracy': 0.6153846153846154}
+sub-01_sub-03 : {'model': 'sub-01', 'test_subject': 'sub-03', 'accuracy': 0.7272727272727273}
+sub-02_sub-01 : {'model': 'sub-02', 'test_subject': 'sub-01', 'accuracy': 0.5}
+sub-02_sub-02 : {'model': 'sub-02', 'test_subject': 'sub-02', 'accuracy': 0.46153846153846156}
+sub-02_sub-03 : {'model': 'sub-02', 'test_subject': 'sub-03', 'accuracy': 0.6363636363636364}
