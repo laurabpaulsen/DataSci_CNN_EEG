@@ -13,7 +13,7 @@ sys.path.append(str(Path(__file__).parents[1]))
 from utils.gaf import generate_gafs
 
 
-def train_val_test_split(X, y, train_size=0.8, val_size=0.1, test_size=0.1):
+def train_test_split(X, y, train_size=0.8, test_size = 0.2):
     """
     Splits the data into train, validation and test sets. 
 
@@ -21,14 +21,18 @@ def train_val_test_split(X, y, train_size=0.8, val_size=0.1, test_size=0.1):
     NOTE: Maybe implement splitting taking the number of samples in each class into account.
     """
     
-    assert train_size + val_size + test_size == 1, "The sum of train_size, val_size and test_size must be 1"
+    assert train_size +  + test_size == 1, "The sum of train_size, val_size and test_size must be 1"
     n = len(X)
     train_end = int(n * train_size)
-    val_end = train_end + int(n * val_size)
-    X_train, y_train = X[:train_end], y[:train_end]
-    X_val, y_val = X[train_end:val_end], y[train_end:val_end]
-    X_test, y_test = X[val_end:], y[val_end:]
-    return X_train, y_train, X_val, y_val, X_test, y_test
+    test_end = int(n * (train_size + test_size))
+
+    X_train = X[:train_end]
+    y_train = y[:train_end]
+
+    X_test = X[train_end:test_end]
+    y_test = y[train_end:test_end]
+
+    return X_train, y_train, X_test, y_test
 
 
 def main():
@@ -112,17 +116,15 @@ def main():
         # generate the GAFs
         gafs = generate_gafs(X, image_size=50)
 
-        X_train, y_train, X_val, y_val, X_test, y_test = train_val_test_split(gafs, y)
+        X_train, y_train, X_test, y_test = train_test_split(gafs, y)
 
         # save the GAFs
-        np.save(outpath_sub / f'{subject}_gafs_train.npy', X_train)
-        np.save(outpath_sub / f'{subject}_gafs_val.npy', X_val)
-        np.save(outpath_sub / f'{subject}_gafs_test.npy', X_test)
+        np.save(outpath_sub / f'gafs_train.npy', X_train)
+        np.save(outpath_sub / f'gafs_test.npy', X_test)
 
         # save the labels
-        np.save(outpath_sub / f'{subject}_labels_train.npy', y_train)
-        np.save(outpath_sub / f'{subject}_labels_val.npy', y_val)
-        np.save(outpath_sub / f'{subject}_labels_test.npy', y_test)
+        np.save(outpath_sub / f'labels_train.npy', y_train)
+        np.save(outpath_sub / f'labels_test.npy', y_test)
 
 if __name__ == '__main__':
     main()
