@@ -1,0 +1,9 @@
+sub-01_sub-01 : {'model': 'sub-01', 'test_subject': 'sub-01', 'accuracy': 0.6666666666666666}
+sub-01_sub-02 : {'model': 'sub-01', 'test_subject': 'sub-02', 'accuracy': 0.7083333333333334}
+sub-01_sub-03 : {'model': 'sub-01', 'test_subject': 'sub-03', 'accuracy': 0.7}
+joint_sub-01 : {'model': 'joint', 'test_subject': 'sub-01', 'accuracy': 0.5833333333333334}
+joint_sub-02 : {'model': 'joint', 'test_subject': 'sub-02', 'accuracy': 0.7083333333333334}
+joint_sub-03 : {'model': 'joint', 'test_subject': 'sub-03', 'accuracy': 0.7}
+sub-02_sub-01 : {'model': 'sub-02', 'test_subject': 'sub-01', 'accuracy': 0.5}
+sub-02_sub-02 : {'model': 'sub-02', 'test_subject': 'sub-02', 'accuracy': 0.5416666666666666}
+sub-02_sub-03 : {'model': 'sub-02', 'test_subject': 'sub-03', 'accuracy': 0.4}
