@@ -1,0 +1,16 @@
+{
+    "sub-01": {"bad_channels": ["Fp1", "Fp2", "FC2", "T7"]},
+    "sub-02": {"bad_channels": ["Fp1", "Fp2", "T7"]},
+    "sub-03": {"bad_channels": ["TP10", "Fp1", "Fp2"]},
+    "sub-04": {"bad_channels": ["Fp1", "Fp2", "F7", "TP9"]},
+    "sub-05": {"bad_channels": ["Fp1", "Fp2", "TP9", "TP10"]},
+    "sub-06": {"bad_channels": ["Fp1", "Fp2"]},
+    "sub-07": {"bad_channels": ["Fp1", "Fp2", "FC1"]},
+    "sub-08": {"bad_channels": ["Fp1", "Fp2", "T7", "T8", "F7", "P7"]},
+    "sub-09": {"bad_channels": ["Fp1", "Fp2", "P7", "TP9"]},
+    "sub-10": {"bad_channels": ["Fp1", "Fp2"]},
+    "sub-11": {"bad_channels": ["Fp1", "Fp2", "CP6"]},
+    "sub-12": {"bad_channels": ["Fp1", "Fp2"]},
+    "sub-13": {"bad_channels": ["Fp1", "Fp2"]},
+
+}
