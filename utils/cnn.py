@@ -6,9 +6,48 @@ from sklearn.model_selection import train_test_split
 # pytorch tools
 import torch
 import torch.nn as nn
-import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
 
+# skorch tools
+from skorch import NeuralNetClassifier
+from skorch.callbacks import EarlyStopping
+
+
+
+def get_cnn_model(**kwargs):
+    """
+    Returns the CNN model
+
+    Parameters
+    ----------
+    kwargs : dict
+        Dictionary of arguments to pass to the model
+
+    Returns
+    -------
+    NeuralNetClassifier
+        The CNN model
+    """
+    early_stopping = get_early_stopping()
+    return NeuralNetClassifier(
+        Net,
+        max_epochs=30,
+        criterion=nn.CrossEntropyLoss,
+        optimizer=torch.optim.SGD,
+        iterator_train__shuffle=True,
+        callbacks=[early_stopping],
+        **kwargs
+    )
+
+# early stopping callback
+def get_early_stopping():
+    return EarlyStopping(
+        monitor='valid_loss',
+        lower_is_better=True,
+        patience=5,
+        threshold=0.0001,
+        threshold_mode='rel'
+    )
 
 class GAFDataset(Dataset):
     """Dataset class for GAF images, inherits from torch.utils.data.Dataset"""
@@ -62,121 +101,6 @@ def prep_dataloaders(gafs, labels, batch_size=4, test_size=0.3):
     return train_loader, val_loader, test_loader, y_test
 
 
-# define a class for the CNN
-class CNN():
-    # initialize the class
-    def __init__(self, model, optimizer, criterion, lr = 0.001):
-        self.lr = lr
-        self.model = model
-        self.optimizer = optimizer
-        self.criterion = criterion
-    
-    # train the model for one epoch
-    def train(self, train_loader:DataLoader):
-        """
-        Train the model for one epoch and return the loss and accuracy
-
-        Parameters
-        ----------
-        train_loader : DataLoader
-            The training data loader
-        
-        Returns
-        -------
-        train_loss : float
-            The training loss
-        train_acc : float
-            The training accuracy
-        """
-        self.model.train()
-        train_loss, train_acc = 0.0, 0.0
-        
-        for X, y in train_loader:
-            self.optimizer.zero_grad()
-            y_hat = self.model(X.float())
-            loss = self.criterion(y_hat.view(-1), y.float())
-            loss.backward()
-            self.optimizer.step()
-            train_loss += loss.item()
-            train_acc += ((torch.round(torch.sigmoid(y_hat.view(-1)))==y).sum().item() / len(y))
-
-        train_loss /= len(train_loader)
-        train_acc /= len(train_loader)
-
-        return train_loss, train_acc
-    
-    # train the model for X epochs
-    def train_model(self, train_loader:DataLoader, val_loader:DataLoader, epochs: int):
-        """Train the model and return the losses and accuracies
-        
-        Parameters
-        ----------
-        train_loader : DataLoader
-            The training data loader
-        val_loader : DataLoader
-            The validation data loader
-        epochs : int
-            The number of epochs to train for
-        
-        Returns
-        -------
-        history : dict
-            Dictionary with the train and validation loss and accuracies. 
-        """
-
-        # dict for storing losses and accuracies
-        history = {
-            'train_loss': [],
-            'val_loss': [],
-            'train_acc': [],
-            'val_acc': []
-        }
-
-        for epoch in range(epochs):
-            # train
-            train_loss, train_acc = self.train(train_loader)
-            history['train_loss'].append(train_loss)
-            history['train_acc'].append(train_acc)
-            
-            # validate
-            val_loss, val_acc = self.validate(val_loader)
-            history['val_loss'].append(val_loss)
-            history['val_acc'].append(val_acc)
-
-            print(f"Epoch {epoch+1}/{epochs}, train loss: {train_loss:.4f}, train acc: {train_acc:.4f}, val loss: {val_loss:.4f}, val acc: {val_acc:.4f}")
-
-        return history
-    
-    def validate(self, val_loader:DataLoader): 
-        self.model.eval()
-        val_loss, val_acc = 0.0, 0.0
-        with torch.no_grad():
-            for X, y in val_loader:
-                y_hat = self.model(X.float())
-                loss = self.criterion(y_hat.view(-1), y.float())
-                val_loss += loss.item()
-                val_acc += ((torch.round(torch.sigmoid(y_hat.view(-1)))==y).sum().item() / len(y))
-
-            val_loss /= len(val_loader)
-            val_acc /= len(val_loader)
-
-        return val_loss, val_acc
-    
-
-    def predict(self, test_loader):
-        self.model.eval()
-        y_pred = []
-        with torch.no_grad():
-            for X, y in test_loader:
-                y_hat = self.model(X.float())
-                y_pred.append(torch.sigmoid(y_hat).numpy())
-
-        return np.concatenate(y_pred)
-    
-    def state_dict(self):
-        return self.model.state_dict()
-
-
 class Net(nn.Module):
         def __init__(self):
             super(Net, self).__init__()
@@ -210,3 +134,14 @@ class Net(nn.Module):
             x = torch.relu(self.fc1(x))
             x = self.fc2(x)
             return x
+        
+
+def return_param_grid():
+    """
+    Returns the parameter grid for grid search for the CNN model. Ensures that the same parameters are used across all scripts.
+    """
+
+    return {
+        "lr": [0.0001, 0.001, 0.01],
+        "batch_size": [4, 8],
+    }
