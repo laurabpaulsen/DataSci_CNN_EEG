@@ -107,12 +107,6 @@ def main():
                 y[i] = 1
         
 
-        # SCALE THE DATA (-1 to 1) -> Maybe?? 
-        # REASONS: 1) GAFs are sensitive to the range of the data, 2) the range of the data is different for each participant
-        # problem: if we have some noisy data, then maybe min max normalisation is not the best, as the noise will be around the max and min, and maybe the actual signal will be around 0.
-        # https://medium.com/analytics-vidhya/encoding-time-series-as-images-b043becbdbf3
-        #X = (2*X - X.min()) / (X.max() - X.min()) 
-
         # generate the GAFs
         gafs = generate_gafs(X, image_size=50)
 
