@@ -37,7 +37,7 @@ if __name__ in "__main__":
     subject_data_X = []
     subject_data_y = []
 
-    train_subjects = ["sub-01", "sub-02"]
+    train_subjects = ["sub-01", "sub-02", "sub-03", "sub-04", "sub-05"]
 
     for subj in train_subjects:
 

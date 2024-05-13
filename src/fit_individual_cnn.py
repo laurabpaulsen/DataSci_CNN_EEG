@@ -1,11 +1,6 @@
 import numpy as np
 from pathlib import Path
 import torch
-
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from skorch import NeuralNetClassifier # allows us to use pytorch with sklearn for grid search
 from sklearn.model_selection import GridSearchCV
 
 # local imports 
@@ -19,8 +14,8 @@ def main():
     path = Path(__file__)
 
     param_grid = return_param_grid()
-    train_subjects = ["sub-01", "sub-02", "sub-03", "sub-04", "sub-05", "sub-06", "sub-07", "sub-08"]
-
+    train_subjects = ["sub-01", "sub-02", "sub-03", "sub-04", "sub-05"]
+    
     for subj in train_subjects:
 
         gaf_path = path.parents[1] / "data" / "gaf" 

@@ -23,16 +23,7 @@ def prep_data(X, y):
 
 if __name__ in "__main__":
     path = Path(__file__).parents[1]
-    
-    ### SETTING UP PARAMETERS ###
-    max_epochs = 30 ## UP THIS ALOT  
-    # prep for grid search
-    param_grid = {
-        "lr": [0.0001, 0.001, 0.01],
-        "batch_size": [4, 8],
-    }
-
-    train_subjects = ["sub-09","sub-10", "sub-11", "sub-12", "sub-13"]
+    train_subjects = ["sub-06", "sub-07", "sub-08", "sub-09", "sub-10", "sub-11"]
 
 
     for subj in train_subjects:
@@ -44,7 +35,6 @@ if __name__ in "__main__":
         # load the joined model
         joined_model = torch.load(path / "mdl" / "joint" / "model.pt")
 
-       
 
         joined_model.fit(gafs, labels)
 
