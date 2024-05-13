@@ -149,7 +149,7 @@ if __name__ == "__main__":
         # saving the epochs
         output_path_sub = output_path / participant 
         output_path_sub.mkdir(parents=True, exist_ok=True)
-        epochs.save(output_path_sub / "epoch-epo.fif")
+        epochs.save(output_path_sub / "epoch-epo.fif", overwrite=True)
 
 
 
