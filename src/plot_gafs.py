@@ -29,6 +29,7 @@ def ax_plot_gaf(ax, gaf):
 def main_plotter(gaf_path: Path, save_path:Path = None):
     # load gaf
     gaf = np.load(gaf_path)
+    print(gaf.shape)
 
     # only use the first trial
     gaf = gaf[0]
@@ -70,7 +71,7 @@ def main_plotter(gaf_path: Path, save_path:Path = None):
 if __name__ in "__main__":
     path = Path(__file__).parents[1]
 
-    gaf_path = path / "data" / "gaf_lau" / "sub-01_gafs.npy"
+    gaf_path = path / "data" / "gaf" / "sub-01" / "gafs_train.npy"
     plot_path = path / "fig"
 
     if not plot_path.exists():

@@ -7,15 +7,6 @@ import sys
 sys.path.append(str(Path(__file__).parents[1]))
 from utils.cnn import Net
 
-def load_model(model_folder: Path):
-    """
-    Load the model from the folder.
-    """
-    model = torch.load(model_folder / "model.pt")
-    
-    return model
-
-
 class ensemble_model:
     def __init__(self, models):
         self.models = models
@@ -46,19 +37,26 @@ if __name__ in "__main__":
     subjects_gaf_folder = list((path / "data" / "gaf").glob("sub-*"))
     models = list((path / "mdl").glob("*")) + ["ensemble"]
 
+    train_subjects = ["sub-01", "sub-02", "sub-03", "sub-04", "sub-05"]
+
     results = {}
 
     # loop over the models
     for model in models:
         
         if model == "ensemble":
-            models_for_ensemble = list((path / "mdl").glob("sub-*"))
-            mdl = ensemble_model([load_model(model_folder) for model_folder in models_for_ensemble])
+            models_for_ensemble = [path / "mdl" / sub_name / "model.pt" for sub_name in train_subjects]
+            mdl = ensemble_model([torch.load(model_folder) for model_folder in models_for_ensemble])
             model_name = "ensemble"
 
         else:
             model_name = model.name
-            mdl = torch.load(model / "model.pt")
+            if model_name in train_subjects or model_name == "joint":
+                
+                mdl = torch.load(model / "model.pt")
+            else:
+                model_name = f"finetuned_{model_name}"
+                mdl = torch.load(model / "model_finetuned.pt")
     
         for folder in subjects_gaf_folder: # loop over gafs for each subject to test
             test_subject = folder.name

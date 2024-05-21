@@ -43,7 +43,7 @@ if __name__ in "__main__":
 
         gaf_path = path / "data" / "gaf" 
         gafs, labels = np.load(gaf_path / subj / f"gafs_train.npy"), np.load(gaf_path / subj / f"labels_train.npy")
-
+        print(gafs.shape, labels.shape)
         subject_data_X.append(gafs)
         subject_data_y.append(labels)
 
@@ -57,7 +57,7 @@ if __name__ in "__main__":
     model = get_cnn_model()
 
     # run grid search
-    gs = GridSearchCV(model, param_grid, cv=10, scoring='accuracy', verbose=2)
+    gs = GridSearchCV(model, param_grid, cv=5, scoring='accuracy', verbose=2)
     gs.fit(X, y)
 
     # generate the model with the best parameters to save

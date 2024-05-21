@@ -131,6 +131,7 @@ if __name__ == "__main__":
 
         reject = {"eeg": 100e-6}
 
+        picks = mne.pick_types(raw.info, eeg=True)
         # creating the epochs
         epochs = mne.Epochs(
             raw, 
@@ -140,7 +141,8 @@ if __name__ == "__main__":
             tmax=0.5, 
             baseline=(-0.2, 0), 
             preload=True, 
-            reject=reject
+            reject=reject,
+            picks=picks
         )
 
         # downsample the epochs
