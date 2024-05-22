@@ -6,20 +6,6 @@ import sys
 sys.path.append(str(Path(__file__).parents[1]))
 
 
-def prep_data(X, y):
-    
-    # shuffle the data
-    idx = np.arange(len(X))
-    np.random.shuffle(idx)
-
-    X = X[idx]
-    y = y[idx]
-
-    # change labels to LongTensor to avoid the error: RuntimeError: Expected object of scalar type Long but got scalar type Float    
-    y = torch.LongTensor(y) 
-    
-    return X, y
-
 
 if __name__ in "__main__":
     path = Path(__file__).parents[1]
@@ -34,6 +20,12 @@ if __name__ in "__main__":
 
         # load the joined model
         joined_model = torch.load(path / "mdl" / "joint" / "model.pt")
+        
+        layers_to_freeze = [joined_model.conv1, joined_model.pool1, joined_model.bn1, joined_model.drop1, joined_model.conv2, joined_model.pool2, joined_model.bn2, joined_model.drop2, joined_model.conv3, joined_model.pool3, joined_model.bn3, joined_model.drop3]
+        
+        for layer in layers_to_freeze:
+            for param in layer.parameters():
+                param.requires_grad = False
 
 
         joined_model.fit(gafs, labels)
