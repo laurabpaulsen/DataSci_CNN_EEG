@@ -3,10 +3,53 @@ This repository holds the code for the final project for Data Science (S2024). T
 
 
 
+The data is not publicly available, and therefore the full pipeline cannot be run without providing the data. However, the code is provided for reference and to show the steps taken to preprocess the data and train the models.
 
-[LINK TO VISUAL ANALYTICS PROJECT](https://github.com/laurabpaulsen/CNN_GAF_neuro)
+## Pipeline
+All commands should be run from the root directory of the repository.
 
-## Notes on the exam
-* Length for one student: 10-12 standard pages
-* Should include a product - can be a GitHub repository with the code or a pipeline
-    * "The product must be accompanied by a take-home assignment on a topic of the student’s choice, in which the student explains the relevance and methodological and theoretical basis of the product. The assignment and the product must be submitted for assessment in WISEflow before the deadline set in the examination plan. Assessment is based on an overall assessment of the take-home assignment and the practical product."
+Create a virtual environment and install the required packages:
+```
+setup_env.sh
+```
+
+Preprocess the data:
+```
+python src/preprocess.py
+```
+
+Convert the timeseries to GAFs and MTFs:
+```
+python src/timeseries2gaf.py
+```
+
+Fit the individual CNNs to training participants:
+```
+python src/fit_individual_cnn.py
+```
+
+Fit the joint CNN on training participants:
+```
+python src/fit_joint_cnn.py
+```
+
+Finetune the joint CNN to test participants:
+```
+python src/finetune_joint.py
+```
+
+Evaluate the models:
+```
+python src/eval_models.py
+```
+
+Plot the results:
+```
+python src/plot_results.py
+```
+
+
+Alternatively, the pipeline can be run with the following command:
+```
+run_all.sh
+```
