@@ -212,7 +212,6 @@ def plot_differences(results, output_dir):
     
 
     ax.set_ylabel("Difference in accuracy (%)")
-    ax.set_xlabel("Contrast")
 
 
     # turn the x labels 90 degrees
