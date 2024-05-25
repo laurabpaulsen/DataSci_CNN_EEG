@@ -20,13 +20,13 @@ if __name__ in "__main__":
 
         # load the joined model
         joined_model = torch.load(path / "mdl" / "joint" / "model.pt")
-        
-        layers_to_freeze = [joined_model.conv1, joined_model.pool1, joined_model.bn1, joined_model.drop1, joined_model.conv2, joined_model.pool2, joined_model.bn2, joined_model.drop2, joined_model.conv3, joined_model.pool3, joined_model.bn3, joined_model.drop3]
-        
-        for layer in layers_to_freeze:
-            for param in layer.parameters():
-                param.requires_grad = False
 
+        # freeze all layers except for fc1 and fc2
+        for name, param in joined_model.module_.named_parameters():
+            if "fc1" in name or "fc2" in name:
+                param.requires_grad = True
+            else:
+                param.requires_grad = False
 
         joined_model.fit(gafs, labels)
 
