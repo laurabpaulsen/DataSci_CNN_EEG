@@ -31,9 +31,9 @@ def setup_logger():
 if __name__ == "__main__":
     path = Path(__file__).parent
 
-    data_path = path.parent / "data"
+    data_path = Path("/work/raw/FaceWord")
     session_info_path = path / "session_info.txt"
-    output_path = data_path / "preprocessed"
+    output_path = path.parent / "data" / "preprocessed"
 
     # make sure that the output path exists
     output_path.mkdir(parents=True, exist_ok=True)
@@ -68,17 +68,15 @@ if __name__ == "__main__":
         'Incorrect/Neu/iNeg': 211 # incor resp ('b') to neu w + neg i
     }
 
-    for participant in (data_path / "EEG").iterdir():
-        if not participant.is_dir():
-            continue
-        else:
-            participant = participant.name
+    participant_paths = list(data_path.glob("*.vhdr"))
 
-        logger.info(f"Preprocessing participant {participant}")
-        print(f"Preprocessing participant {participant}")
+    # drop the one for group78
+    participant_paths = [participant_path for participant_path in participant_paths if "13" not in participant_path.stem]
 
-        # find the vhdr file for the participant
-        participant_path = list((data_path / "EEG" / participant).glob("*.vhdr"))[0]
+    for participant_path in participant_paths:
+
+        participant_filename = participant_path.stem  
+        participant = session_info[participant_filename]["nickname"]
 
         # loading in the raw data
         logging.info(f"Loading in raw data for participant {participant}")
@@ -104,9 +102,9 @@ if __name__ == "__main__":
         raw.set_eeg_reference("average", projection=False)
 
         # dropping the bad channels
-        bad_channels = session_info[participant]["bad_channels"]
+        bad_channels = session_info[participant_filename]["bad_channels"]
 
-        if session_info[participant]["bad_channels"] != []:
+        if session_info[participant_filename]["bad_channels"] != []:
             logger.info(f"Dropping the bad channels for participant {participant}. Bad channels: {bad_channels}")
             raw.info["bads"] = bad_channels
             
@@ -141,7 +139,7 @@ if __name__ == "__main__":
             tmax=0.5, 
             baseline=(-0.2, 0), 
             preload=True, 
-            reject=reject,
+            reject=None,
             picks=picks
         )
 
