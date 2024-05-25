@@ -1,12 +1,7 @@
 from pathlib import Path
 import numpy as np
 import torch
-import torch.nn as nn
-import torch.optim as optim
 
-
-from skorch import NeuralNetClassifier 
-from skorch.callbacks import EarlyStopping
 from sklearn.model_selection import GridSearchCV
 
 import sys
