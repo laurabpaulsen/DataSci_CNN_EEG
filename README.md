@@ -1,6 +1,9 @@
 # CNN classification from EEG timeseries data transformed to images
 This repository holds the code for the final project for Data Science, Prediction, and Forecasting (S2024). This includes preprocessing of EEG data, converting the timeseries from the sensors to Gramian Angular & Markow transitional fields, and the training and testing 3D convolutional neural networks on the data.
 
+![images](fig/gaf_sub-01.png)
+
+
 ## Project overview
 
 | Directory               | Description |
@@ -11,15 +14,20 @@ This repository holds the code for the final project for Data Science, Predictio
 | `src/`                    | Scripts used to preprocess, convert timeseries to images and fit models. |
 | `utils/`                  | Module with functions and classes for CNN and converting timeseries to images |
 
-## Usage
-
-The data is not publicly available, and therefore the full pipeline cannot be run directly. However, by providing you own data and modifying the initial preprocessing of the EEG data, the rest of the pipeline works. 
-
-All commands should be run from the root directory of the repository.
-
-Create a virtual environment and install the required packages:
+## Setup
+Before running any code, create a virtual environment and install the required packages within it using the following command:
 ```
 setup_env.sh
+```
+
+As the data is not publicly available, the full pipeline cannot be run directly. However, by providing you own data and modifying the script for initial preprocessing of the EEG data (`src/preprocess.py`) the rest of the pipeline can be utilised. 
+
+
+
+## Usage
+Activate the virtual environment
+```
+source env/bin/activate
 ```
 
 Preprocess the data:
@@ -36,15 +44,13 @@ python src/finetune_joint.py # finetune the joint CNN to test participants
 ```
 
 Evaluating and visualisation
-
-Evaluate the models:
 ```
 python src/eval_models.py
 python src/plot_results.py
 ```
 
 
-Alternatively, the pipeline can be run with the following command:
+Alternatively, the pipeline can be by using the provided bash script
 ```
 run_all.sh
 ```
