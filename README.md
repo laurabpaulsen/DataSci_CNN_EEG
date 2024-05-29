@@ -1,11 +1,20 @@
-# DataSci_CNN_EEG
-This repository holds the code for the final project for Data Science (S2024). This includes preprocessing of EEG data, converting the timeseries from the sensors to gramian angular & Markow transitional fields, and the training and testing 3D convolutional neural networks on the data.
+# CNN classification from EEG timeseries data transformed to images
+This repository holds the code for the final project for Data Science, Prediction, and Forecasting (S2024). This includes preprocessing of EEG data, converting the timeseries from the sensors to Gramian Angular & Markow transitional fields, and the training and testing 3D convolutional neural networks on the data.
 
+## Project overview
 
+| Directory               | Description |
+|---------------------------|-------------|
+| `data/`                   | Contains the preprocessed EEG data and data converted to images.|
+| `fig/`                    | Visualisations used in the paper. |
+| `results/`                | Dictionary with results for each model for each participant|
+| `src/`                    | Scripts used to preprocess, convert timeseries to images and fit models. |
+| `utils/`                  | Module with functions and classes for CNN and converting timeseries to images |
 
-The data is not publicly available, and therefore the full pipeline cannot be run without providing the data. However, the code is provided for reference and to show the steps taken to preprocess the data and train the models.
+## Usage
 
-## Pipeline
+The data is not publicly available, and therefore the full pipeline cannot be run directly. However, by providing you own data and modifying the initial preprocessing of the EEG data, the rest of the pipeline works. 
+
 All commands should be run from the root directory of the repository.
 
 Create a virtual environment and install the required packages:
@@ -15,36 +24,22 @@ setup_env.sh
 
 Preprocess the data:
 ```
-python src/preprocess.py
+python src/preprocess.py # initial preprocessing of EEG data
+python src/timeseries2gaf.py # convert the timeseries to GAFs and MTFs
 ```
 
-Convert the timeseries to GAFs and MTFs:
+Fit models
 ```
-python src/timeseries2gaf.py
-```
-
-Fit the individual CNNs to training participants:
-```
-python src/fit_individual_cnn.py
+python src/fit_individual_cnn.py # fit the individual CNNs 
+python src/fit_joint_cnn.py # fit the joint CNN on training participants
+python src/finetune_joint.py # finetune the joint CNN to test participants
 ```
 
-Fit the joint CNN on training participants:
-```
-python src/fit_joint_cnn.py
-```
-
-Finetune the joint CNN to test participants:
-```
-python src/finetune_joint.py
-```
+Evaluating and visualisation
 
 Evaluate the models:
 ```
 python src/eval_models.py
-```
-
-Plot the results:
-```
 python src/plot_results.py
 ```
 
